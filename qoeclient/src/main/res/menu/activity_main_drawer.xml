@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Videos">
+        <menu>
+            <item
+                android:id="@+id/nav_all"
+                android:icon="@drawable/ic_allvideos"
+                android:title="全部" />
+        </menu>
+    </item>
+
+    <item android:title="System">
+        <menu>
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_feedback"
+                android:title="反馈" />
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="设置" />
+        </menu>
+    </item>
+
+</menu>
