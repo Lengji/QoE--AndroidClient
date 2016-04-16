@@ -15,6 +15,7 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
     private CustomMediaController mController = null;
     private boolean isFullScreen = false;
     private canFullScreen mActivity = null;
+    private static final float densityRatio = 2.0f; // 密度比值系数（密度比值：一英寸中像素点除以160）
 
     public CustomVideoView(Context context) {
         super(context);
@@ -24,7 +25,9 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
 
     public CustomVideoView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.mActivity = (canFullScreen)context;
+        if(!isInEditMode()){
+            this.mActivity = (canFullScreen)context;
+        }
         init();
     }
 
@@ -85,7 +88,7 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
         }
     }
 
-    private void reSize(){
+    public void reSize(){
         if(isFullScreen){
             parentView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
             parentView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -93,7 +96,7 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
             getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
         }else{
             parentView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            parentView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            parentView.getLayoutParams().height =(int) (270 * densityRatio);
             getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
             getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
         }

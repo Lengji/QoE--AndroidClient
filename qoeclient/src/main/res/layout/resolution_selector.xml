@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#88000000"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/resolution_uhd"
+        style="@style/TextViewButton"
+        android:text="超清"/>
+
+    <TextView
+        android:id="@+id/resolution_hd"
+        style="@style/TextViewButton"
+        android:text="高清"/>
+
+    <TextView
+        android:id="@+id/resolution_sd"
+        style="@style/TextViewButton"
+        android:text="标清"/>
+</LinearLayout>

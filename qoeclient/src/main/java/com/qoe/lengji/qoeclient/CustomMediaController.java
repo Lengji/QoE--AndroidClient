@@ -18,6 +18,9 @@ public class CustomMediaController extends PopupWindow {
     private static final int stuckCheckTime = 500;
     private static final int controllerHeight = 40;  // 控制器的高度，使用时要乘以densityRatio
     private static final float densityRatio = 2.0f; // 密度比值系数（密度比值：一英寸中像素点除以160）
+    private static final int selectorWidth = 60;
+    private static final int selectorItemHeight = 40;
+    private static final int selectorItemCount = 3;
 
     private boolean isDragging = false;
     private boolean checkingStuck = false;
@@ -32,7 +35,10 @@ public class CustomMediaController extends PopupWindow {
     private TextView textView_duration = null;
     private TextView action_change_resolution = null;
 
-    private CustomMediaPlayerControl mediaControl;
+    private PopupWindow resolutionSelector = null;
+    private TextView resolution_sd = null;
+    private TextView resolution_hd = null;
+    private TextView resolution_uhd = null;
 
     private final Handler showHideHandler = new Handler() {
         @Override
@@ -53,6 +59,7 @@ public class CustomMediaController extends PopupWindow {
         }
     };
 
+    private CustomMediaPlayerControl mediaControl = null;
     private final Handler stuckHandler = new Handler();
     Runnable onceCheckStuck = new Runnable() {
         @Override
@@ -99,6 +106,12 @@ public class CustomMediaController extends PopupWindow {
         textView_playTime = (TextView) controllerView.findViewById(R.id.current_time);
         textView_duration = (TextView) controllerView.findViewById(R.id.end_time);
         action_change_resolution = (TextView) controllerView.findViewById(R.id.control_resolution);
+
+        View selectorView = View.inflate(context, R.layout.resolution_selector, null);
+        resolutionSelector = new PopupWindow(selectorView, getSelectorWidth(), getSelectorHeight(), false);
+        resolution_sd = (TextView) selectorView.findViewById(R.id.resolution_sd);
+        resolution_hd = (TextView) selectorView.findViewById(R.id.resolution_hd);
+        resolution_uhd = (TextView) selectorView.findViewById(R.id.resolution_uhd);
     }
 
     private void setActions() {
@@ -147,9 +160,8 @@ public class CustomMediaController extends PopupWindow {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                show(60000);
                 isDragging = true;
-                showHideHandler.removeMessages(SHOW_PROGRESS);
+                show();
             }
 
             @Override
@@ -164,8 +176,34 @@ public class CustomMediaController extends PopupWindow {
             @Override
             public void onClick(View v) {
                 if (mediaControl != null) {
-                    //    mediaControl.changeResolution();
+                    if (resolutionSelector.isShowing()) {
+                        hideResolutionSelector();
+                    } else {
+                        showResolutionSelector();
+                    }
                 }
+            }
+        });
+
+        resolution_sd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideResolutionSelector();
+                mediaControl.changeResolution(1);
+            }
+        });
+        resolution_hd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideResolutionSelector();
+                mediaControl.changeResolution(2);
+            }
+        });
+        resolution_uhd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideResolutionSelector();
+                mediaControl.changeResolution(3);
             }
         });
 
@@ -211,10 +249,14 @@ public class CustomMediaController extends PopupWindow {
         }
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        resolutionSelector.dismiss();
+    }
+
     public void hide() {
-        if (isShowing()) {
-            dismiss();
-        }
+        dismiss();
         showHideHandler.removeMessages(SHOW_PROGRESS);
     }
 
@@ -227,13 +269,36 @@ public class CustomMediaController extends PopupWindow {
         updatePlayPause();
         showHideHandler.sendEmptyMessage(SHOW_PROGRESS);
         showHideHandler.removeMessages(FADE_OUT);
-        if (mediaControl.isPlaying()) {
+        if (!isDragging && !resolutionSelector.isShowing() && mediaControl.isPlaying()) {
             showHideHandler.sendEmptyMessageDelayed(FADE_OUT, timeout);
         }
     }
 
+    public void hideResolutionSelector() {
+        resolutionSelector.dismiss();
+        show();
+    }
+
+    public void showResolutionSelector() {
+        int[] location = new int[2];
+        action_change_resolution.getLocationInWindow(location);
+        int widthMove = (getSelectorWidth() - action_change_resolution.getWidth()) / 2;
+        int heightMove = getHeight() + getSelectorHeight();
+        resolutionSelector.showAsDropDown(((CustomVideoView) mediaControl).getParentView(),
+                location[0] - widthMove, location[1] - heightMove);
+        show();
+    }
+
     public int getHeight() {
         return (int) (controllerHeight * densityRatio);
+    }
+
+    private int getSelectorWidth() {
+        return selectorWidth * (int) densityRatio;
+    }
+
+    private int getSelectorHeight() {
+        return selectorItemCount * selectorItemHeight * (int) densityRatio;
     }
 
     public void setPlayer(CustomMediaPlayerControl control) {

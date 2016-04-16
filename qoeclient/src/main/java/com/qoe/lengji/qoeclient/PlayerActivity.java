@@ -62,6 +62,7 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
     @Override
     public void onConfigurationChanged (Configuration newConfig){
         super.onConfigurationChanged(newConfig);
+        mVideoView.reSize();
     }
 
     @Override
