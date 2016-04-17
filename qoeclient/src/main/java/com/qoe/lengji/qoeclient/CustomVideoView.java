@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.VideoView;
 
+import java.util.Calendar;
+
 public class CustomVideoView extends VideoView  implements CustomMediaController.CustomMediaPlayerControl{
 
     private View parentView = null; //父视图，为了确保视频画面处于在屏幕的水平中央，并且控制条是依附在夫视图上的，以保证画面横向未填满屏幕时控制块仍能顶满屏幕。
@@ -38,6 +40,7 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
     }
 
     private void init() {
+        final long initTime = Calendar.getInstance().getTimeInMillis();
         setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -51,7 +54,9 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
-                if(mController!=null){
+                long startTime = Calendar.getInstance().getTimeInMillis();
+                hasPrepared(startTime - initTime);
+                if (mController != null) {
                     mController.startCheckStuck();
                     mController.hide();
                 }
@@ -101,6 +106,10 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
             getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
         }
         mController.hide();
+    }
+
+    public void hasPrepared( long waitTime) {
+        Log.i("prepared time",String.valueOf(waitTime));
     }
 
     @Override

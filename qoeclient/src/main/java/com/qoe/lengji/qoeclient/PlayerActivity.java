@@ -38,7 +38,6 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
 
     }
 
-
     @Override
     public boolean makeFullScreen() {
         WindowManager.LayoutParams params = getWindow().getAttributes();

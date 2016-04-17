@@ -318,6 +318,10 @@ public class CustomMediaController extends PopupWindow {
         checkingStuck = false;
     }
 
+    public boolean isDragging(){
+        return isDragging;
+    }
+
     public interface CustomMediaPlayerControl {
         boolean isPlaying();
 
