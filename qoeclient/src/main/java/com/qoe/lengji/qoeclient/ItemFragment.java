@@ -24,7 +24,7 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Video v1 = new Video("Test", "http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8", "Details");
+        Video v1 = new Video("Test", "http://10.8.169.175:8080/playlist.m3u8", "Details");
         videos.add(v1);
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 

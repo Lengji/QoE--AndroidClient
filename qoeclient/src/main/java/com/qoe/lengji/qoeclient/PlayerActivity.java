@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
+
+import java.net.URI;
+import java.net.URL;
 
 
 public class PlayerActivity extends Activity implements CustomVideoView.canFullScreen {
@@ -29,11 +32,11 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
 
     private void playVideo() {
         Intent intent = getIntent();
-        String url = intent.getStringExtra("Url");
+        Uri uri = Uri.parse(intent.getStringExtra("Url"));
         String titlr = intent.getStringExtra("Titlr");
         String detail = intent.getStringExtra("Detail");
 
-        mVideoView.setVideoPath(url);
+        mVideoView.setVideoURI(uri);
         mVideoView.requestFocus();
 
     }
@@ -68,6 +71,7 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
     public void onBackPressed() {
         if(mVideoView!=null && mVideoView.isFullScreen()){
             mVideoView.exitFullScreen();
+            mVideoView.getMediaController().updateFullScreen();
             return;
         }
         super.onBackPressed();

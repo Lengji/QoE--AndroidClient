@@ -14,7 +14,7 @@ public class CustomMediaController extends PopupWindow {
 
     private static final int FADE_OUT = 1;
     private static final int SHOW_PROGRESS = 2;
-    private static final int defaultTimeout = 3000;
+    private static final int defaultTimeout = 5000;
     private static final int stuckCheckTime = 500;
     private static final int controllerHeight = 40;  // 控制器的高度，使用时要乘以densityRatio
     private static final float densityRatio = 2.0f; // 密度比值系数（密度比值：一英寸中像素点除以160）
@@ -141,9 +141,9 @@ public class CustomMediaController extends PopupWindow {
                     return;
                 }
                 if (mediaControl.isFullScreen() && mediaControl.exitFullScreen()) {
-                    action_fullscreen.setImageResource(R.drawable.media_fullscreen);
+                    updateFullScreen();
                 } else if (!mediaControl.isFullScreen() && mediaControl.fullScreen()) {
-                    action_fullscreen.setImageResource(R.drawable.media_fullscreen_exit);
+                    updateFullScreen();
                 }
             }
         });
@@ -207,6 +207,14 @@ public class CustomMediaController extends PopupWindow {
             }
         });
 
+    }
+
+    public void updateFullScreen() {
+        if (mediaControl.isFullScreen()) {
+            action_fullscreen.setImageResource(R.drawable.media_fullscreen);
+        } else {
+            action_fullscreen.setImageResource(R.drawable.media_fullscreen_exit);
+        }
     }
 
     private int setProgress() {
@@ -316,10 +324,6 @@ public class CustomMediaController extends PopupWindow {
 
     public void stopCheckStuck() {
         checkingStuck = false;
-    }
-
-    public boolean isDragging(){
-        return isDragging;
     }
 
     public interface CustomMediaPlayerControl {
