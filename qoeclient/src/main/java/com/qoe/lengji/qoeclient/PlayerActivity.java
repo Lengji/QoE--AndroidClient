@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 
 import java.net.URI;
@@ -33,7 +32,7 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
 
     private void playVideo() {
         Intent intent = getIntent();
-        Uri uri = intent.getParcelableExtra(("Uri"));
+        Uri uri = Uri.parse(intent.getStringExtra("Url"));
         String titlr = intent.getStringExtra("Titlr");
         String detail = intent.getStringExtra("Detail");
 

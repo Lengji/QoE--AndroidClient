@@ -2,7 +2,6 @@ package com.qoe.lengji.qoeclient;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,7 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Video v1 = new Video("Test", "Details", Uri.parse("http://192.16.137.1:8080/QoEProject/QoEResource/Game/000001/uhd/playlist.m3u8"),null,null);
+        Video v1 = new Video("Test", "http://10.8.169.175:8080/playlist.m3u8", "Details");
         videos.add(v1);
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
@@ -42,8 +41,8 @@ public class ItemFragment extends Fragment {
             Intent intent = new Intent(getActivity(), PlayerActivity.class);
             Video video = (Video) listview.getItemAtPosition(position);
             intent.putExtra("Title", video.getTitle());
-            intent.putExtra("Uri", video.getUri_UHD());
-            intent.putExtra("Detail", video.getDescription());
+            intent.putExtra("Url", video.getUrl());
+            intent.putExtra("Detail", video.getDetail());
             startActivity(intent);
         }
     }
@@ -74,7 +73,7 @@ public class ItemFragment extends Fragment {
                 TextView titleView = (TextView) v.findViewById(R.id.video_title);
                 titleView.setText(video.getTitle());
                 TextView detailView = (TextView) v.findViewById(R.id.video_details);
-                detailView.setText(video.getDescription());
+                detailView.setText(video.getDetail());
             } else {
                 v = convertView;
             }
