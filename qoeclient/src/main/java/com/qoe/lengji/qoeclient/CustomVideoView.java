@@ -64,6 +64,7 @@ public class CustomVideoView extends VideoView  implements CustomMediaController
                 reSize();
             }
         });
+
     }
 
     public CustomMediaController getMediaController(){

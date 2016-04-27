@@ -1,69 +1,68 @@
 package com.qoe.lengji.qoeclient;
 
+import android.net.Uri;
+
 public class Video {
 
 	private String Title;
-	private String Url;
-	private String Detail;
-	
-	public Video(String title, String url, String detail) {
-		super();
+	private String Description;
+	private Uri Uri_UHD;
+	private Uri Uri_HD;
+	private Uri Uri_SD;
+
+	public Video(String title, String description, Uri uri_UHD, Uri uri_HD, Uri uri_SD) {
 		Title = title;
-		Url = url;
-		Detail = detail;
+		Description = description;
+		Uri_UHD = uri_UHD;
+		Uri_HD = uri_HD;
+		Uri_SD = uri_SD;
 	}
+
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Detail == null) ? 0 : Detail.hashCode());
-		result = prime * result + ((Title == null) ? 0 : Title.hashCode());
-		result = prime * result + ((Url == null) ? 0 : Url.hashCode());
-		return result;
+	public String toString() {
+		return "Video{" +
+				"Title='" + Title + '\'' +
+				", Description='" + Description + '\'' +
+				'}';
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Video other = (Video) obj;
-		if (Detail == null) {
-			if (other.Detail != null)
-				return false;
-		} else if (!Detail.equals(other.Detail))
-			return false;
-		if (Title == null) {
-			if (other.Title != null)
-				return false;
-		} else if (!Title.equals(other.Title))
-			return false;
-		if (Url == null) {
-			if (other.Url != null)
-				return false;
-		} else if (!Url.equals(other.Url))
-			return false;
-		return true;
-	}
+
 	public String getTitle() {
 		return Title;
 	}
+
 	public void setTitle(String title) {
 		Title = title;
 	}
-	public String getUrl() {
-		return Url;
+
+	public String getDescription() {
+		return Description;
 	}
-	public void setUrl(String url) {
-		Url = url;
+
+	public void setDescription(String description) {
+		Description = description;
 	}
-	public String getDetail() {
-		return Detail;
+
+	public Uri getUri_UHD() {
+		return Uri_UHD;
 	}
-	public void setDetail(String detail) {
-		Detail = detail;
+
+	public void setUri_UHD(Uri uri_UHD) {
+		Uri_UHD = uri_UHD;
 	}
-	
+
+	public Uri getUri_HD() {
+		return Uri_HD;
+	}
+
+	public void setUri_HD(Uri uri_HD) {
+		Uri_HD = uri_HD;
+	}
+
+	public Uri getUri_SD() {
+		return Uri_SD;
+	}
+
+	public void setUri_SD(Uri uri_SD) {
+		Uri_SD = uri_SD;
+	}
 }
