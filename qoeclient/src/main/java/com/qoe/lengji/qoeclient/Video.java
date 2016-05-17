@@ -1,69 +1,103 @@
 package com.qoe.lengji.qoeclient;
 
-public class Video {
 
-	private String Title;
-	private String Url;
-	private String Detail;
-	
-	public Video(String title, String url, String detail) {
-		super();
-		Title = title;
-		Url = url;
-		Detail = detail;
-	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((Detail == null) ? 0 : Detail.hashCode());
-		result = prime * result + ((Title == null) ? 0 : Title.hashCode());
-		result = prime * result + ((Url == null) ? 0 : Url.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Video other = (Video) obj;
-		if (Detail == null) {
-			if (other.Detail != null)
-				return false;
-		} else if (!Detail.equals(other.Detail))
-			return false;
-		if (Title == null) {
-			if (other.Title != null)
-				return false;
-		} else if (!Title.equals(other.Title))
-			return false;
-		if (Url == null) {
-			if (other.Url != null)
-				return false;
-		} else if (!Url.equals(other.Url))
-			return false;
-		return true;
-	}
-	public String getTitle() {
-		return Title;
-	}
-	public void setTitle(String title) {
-		Title = title;
-	}
-	public String getUrl() {
-		return Url;
-	}
-	public void setUrl(String url) {
-		Url = url;
-	}
-	public String getDetail() {
-		return Detail;
-	}
-	public void setDetail(String detail) {
-		Detail = detail;
-	}
-	
+import java.io.Serializable;
+
+public class Video implements Serializable{
+
+    private String title;
+    private String description;
+    private String uri_cover = null;
+    private String uri_uhd = null;
+    private String uri_hd = null;
+    private String uri_sd = null;
+
+    public Video(String title, String description, String uri_cover, String uri_uhd, String uri_hd, String uri_sd) {
+        this.title = title;
+        this.description = description;
+        this.uri_cover = uri_cover;
+        this.uri_uhd = uri_uhd;
+        this.uri_hd = uri_hd;
+        this.uri_sd = uri_sd;
+    }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", uri_cover='" + uri_cover + '\'' +
+                ", uri_uhd='" + uri_uhd + '\'' +
+                ", uri_hd='" + uri_hd + '\'' +
+                ", uri_sd='" + uri_sd + '\'' +
+                '}';
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUri_cover() {
+        return uri_cover;
+    }
+
+    public void setUri_cover(String uri_cover) {
+        this.uri_cover = uri_cover;
+    }
+
+    public String getUri_uhd() {
+        return uri_uhd;
+    }
+
+    public void setUri_uhd(String uri_uhd) {
+        this.uri_uhd = uri_uhd;
+    }
+
+    public String getUri_hd() {
+        return uri_hd;
+    }
+
+    public void setUri_hd(String uri_hd) {
+        this.uri_hd = uri_hd;
+    }
+
+    public String getUri_sd() {
+        return uri_sd;
+    }
+
+    public void setUri_sd(String uri_sd) {
+        this.uri_sd = uri_sd;
+    }
+
+    public static String getTypeString(int type) {
+        switch (type) {
+            case 0:
+                return "Movie";
+            case 1:
+                return "Episode";
+            case 2:
+                return "Music";
+            case 3:
+                return "Cartoon";
+            case 4:
+                return "Sport";
+            case 5:
+                return "Entertainment";
+            default:
+                return "Other";
+        }
+    }
+
 }

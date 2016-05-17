@@ -4,17 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.WindowManager;
-
-import java.net.URI;
-import java.net.URL;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 
 public class PlayerActivity extends Activity implements CustomVideoView.canFullScreen {
 
     private CustomVideoView mVideoView;
+    private RatingBar mRatingBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,6 +21,18 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
         setContentView(R.layout.activity_play);
         initVideoView();
         playVideo();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mVideoView.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mVideoView.quit((int)mRatingBar.getRating());
+        super.onDestroy();
     }
 
     private void initVideoView() {
@@ -32,13 +43,14 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
 
     private void playVideo() {
         Intent intent = getIntent();
-        Uri uri = Uri.parse(intent.getStringExtra("Url"));
-        String titlr = intent.getStringExtra("Titlr");
-        String detail = intent.getStringExtra("Detail");
-
-        mVideoView.setVideoURI(uri);
+        Video video = (Video) intent.getSerializableExtra("video");
+        mVideoView.setVideo(video);
+        TextView titleView = (TextView) findViewById(R.id.video_title);
+        titleView.setText(video.getTitle());
+        TextView descrView = (TextView) findViewById(R.id.video_description);
+        descrView.setText(video.getDescription());
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
         mVideoView.requestFocus();
-
     }
 
     @Override
@@ -62,14 +74,14 @@ public class PlayerActivity extends Activity implements CustomVideoView.canFullS
     }
 
     @Override
-    public void onConfigurationChanged (Configuration newConfig){
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mVideoView.reSize();
     }
 
     @Override
     public void onBackPressed() {
-        if(mVideoView!=null && mVideoView.isFullScreen()){
+        if (mVideoView != null && mVideoView.isFullScreen()) {
             mVideoView.exitFullScreen();
             mVideoView.getMediaController().updateFullScreen();
             return;

@@ -4,23 +4,47 @@
     <item android:title="Videos">
         <menu>
             <item
-                android:id="@+id/nav_all"
-                android:icon="@drawable/ic_allvideos"
-                android:title="全部" />
+                android:id="@+id/nav_movie"
+                android:icon="@drawable/ic_movie"
+                android:title="电影" />
+            <item
+                android:id="@+id/nav_episode"
+                android:icon="@drawable/ic_episode"
+                android:title="TV剧" />
+            <item
+                android:id="@+id/nav_music"
+                android:icon="@drawable/ic_music"
+                android:title="音乐" />
+            <item
+                android:id="@+id/nav_cartoon"
+                android:icon="@drawable/ic_cartoon"
+                android:title="动画" />
+            <item
+                android:id="@+id/nav_sport"
+                android:icon="@drawable/ic_sport"
+                android:title="竞技" />
+            <item
+                android:id="@+id/nav_entertainment"
+                android:icon="@drawable/ic_entertainment"
+                android:title="娱乐" />
+            <item
+                android:id="@+id/nav_others"
+                android:icon="@drawable/ic_others"
+                android:title="其他" />
         </menu>
     </item>
 
-    <item android:title="System">
-        <menu>
-            <item
-                android:id="@+id/nav_feedback"
-                android:icon="@drawable/ic_feedback"
-                android:title="反馈" />
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_settings"
-                android:title="设置" />
-        </menu>
-    </item>
+    <!--<item android:title="System">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_feedback"-->
+                <!--android:icon="@drawable/ic_feedback"-->
+                <!--android:title="反馈" />-->
+            <!--&lt;!&ndash;<item-->
+                <!--android:id="@+id/nav_settings"-->
+                <!--android:icon="@drawable/ic_settings"-->
+                <!--android:title="设置" />&ndash;&gt;-->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

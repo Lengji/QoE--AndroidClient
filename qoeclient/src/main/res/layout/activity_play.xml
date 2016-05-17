@@ -1,30 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fadingEdge="vertical"
+    android:scrollbars="vertical"
+    android:background="#EEEEEE">
 
-    <FrameLayout
-        android:id="@+id/videoviewContainer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:background="#000000">
-
-        <com.qoe.lengji.qoeclient.CustomVideoView
-            android:id="@+id/videoview"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/video_title"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:textSize="30sp"
-        android:background="#CCCCCC"
-        android:text="Test Video"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <FrameLayout
+            android:id="@+id/videoviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:background="#000000">
+
+            <com.qoe.lengji.qoeclient.CustomVideoView
+                android:id="@+id/videoview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/video_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/video_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textStyle="normal|italic" />
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="您本次的观影体验如何：" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            android:numStars="5"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+</ScrollView>

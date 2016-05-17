@@ -10,22 +10,27 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.image.SmartImageView;
 
 import java.util.ArrayList;
 
-
 public class ItemFragment extends Fragment {
 
-    private int videoType = 0;
-    private ArrayList<Video> videos = new ArrayList<Video>();
+    private ArrayList<Video> videos = null;
     private ListView listview = null;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Video v1 = new Video("Test", "http://10.8.169.175:8080/playlist.m3u8", "Details");
-        videos.add(v1);
+        Bundle bundle = getArguments();
+        int videoType = bundle.getInt("type");
+        videos = VideoManager.getVideoList(videoType);
+        if(videos.isEmpty()){
+            Toast.makeText(container.getContext(),"服务器忙或未添加视频",Toast.LENGTH_SHORT).show();
+        }
+
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
         listview = (ListView) view.findViewById(R.id.videolist);
@@ -40,9 +45,7 @@ public class ItemFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(getActivity(), PlayerActivity.class);
             Video video = (Video) listview.getItemAtPosition(position);
-            intent.putExtra("Title", video.getTitle());
-            intent.putExtra("Url", video.getUrl());
-            intent.putExtra("Detail", video.getDetail());
+            intent.putExtra("video",video);
             startActivity(intent);
         }
     }
@@ -72,8 +75,10 @@ public class ItemFragment extends Fragment {
                 v = View.inflate(getActivity(), R.layout.fragment_item, null);
                 TextView titleView = (TextView) v.findViewById(R.id.video_title);
                 titleView.setText(video.getTitle());
-                TextView detailView = (TextView) v.findViewById(R.id.video_details);
-                detailView.setText(video.getDetail());
+                TextView descriptionView = (TextView) v.findViewById(R.id.video_description);
+                descriptionView.setText(video.getDescription());
+                SmartImageView coverView = (SmartImageView) v.findViewById(R.id.video_cover);
+                coverView.setImageUrl(video.getUri_cover(),R.drawable.playvideo);
             } else {
                 v = convertView;
             }

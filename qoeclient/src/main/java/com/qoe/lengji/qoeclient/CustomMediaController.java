@@ -190,6 +190,7 @@ public class CustomMediaController extends PopupWindow {
             public void onClick(View v) {
                 hideResolutionSelector();
                 mediaControl.changeResolution(1);
+                action_change_resolution.setText("标清");
             }
         });
         resolution_hd.setOnClickListener(new View.OnClickListener() {
@@ -197,6 +198,7 @@ public class CustomMediaController extends PopupWindow {
             public void onClick(View v) {
                 hideResolutionSelector();
                 mediaControl.changeResolution(2);
+                action_change_resolution.setText("高清");
             }
         });
         resolution_uhd.setOnClickListener(new View.OnClickListener() {
@@ -204,6 +206,7 @@ public class CustomMediaController extends PopupWindow {
             public void onClick(View v) {
                 hideResolutionSelector();
                 mediaControl.changeResolution(3);
+                action_change_resolution.setText("超清");
             }
         });
 
@@ -295,6 +298,10 @@ public class CustomMediaController extends PopupWindow {
         resolutionSelector.showAsDropDown(((CustomVideoView) mediaControl).getParentView(),
                 location[0] - widthMove, location[1] - heightMove);
         show();
+    }
+
+    public boolean bingStuck(){
+        return beingStuck;
     }
 
     public int getHeight() {

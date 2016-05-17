@@ -11,15 +11,15 @@
     <TextView
         android:id="@+id/resolution_uhd"
         style="@style/TextViewButton"
-        android:text="超清"/>
+        android:text="高清"/>
 
     <TextView
         android:id="@+id/resolution_hd"
         style="@style/TextViewButton"
-        android:text="高清"/>
+        android:text="清晰"/>
 
     <TextView
         android:id="@+id/resolution_sd"
         style="@style/TextViewButton"
-        android:text="标清"/>
+        android:text="流畅"/>
 </LinearLayout>

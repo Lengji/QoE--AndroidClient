@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center">
 
-    <ImageView
+    <com.loopj.android.image.SmartImageView
         android:id="@+id/video_cover"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/playvideo"
         android:textAppearance="?attr/textAppearanceListItem"
         android:layout_marginLeft="@dimen/text_margin"
@@ -17,22 +18,21 @@
 
     <TextView
         android:id="@+id/video_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:singleLine="true"
+        android:textSize="18sp"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/video_cover" />
 
     <TextView
-        android:id="@+id/video_details"
-        android:layout_width="wrap_content"
+        android:id="@+id/video_description"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Detali"
+        android:textStyle="normal|italic"
+        android:maxLines="2"
+        android:textColor="#615D5C"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/video_title"
         android:layout_toEndOf="@+id/video_cover" />
 

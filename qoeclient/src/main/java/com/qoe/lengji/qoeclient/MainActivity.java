@@ -8,36 +8,45 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Toolbar toolbar = null;
+    int type = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+        if (drawer != null) {
+            drawer.addDrawerListener(toggle);
+        }
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+    }
 
-
-        getFragmentManager().beginTransaction().replace(R.id.fragment_layout,new ItemFragment()).commit();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        switchToFragment(type);
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -45,44 +54,56 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment = null;
-
-        if (id == R.id.nav_all) {
-            fragment = new ItemFragment();
-            // Handle the action
-        } else if (id == R.id.nav_feedback) {
-
-        } else if (id == R.id.nav_settings) {
-
+        int temp = type;
+        switch (id) {
+            case R.id.nav_movie:
+                type = 0;
+                break;
+            case R.id.nav_episode:
+                type = 1;
+                break;
+            case R.id.nav_music:
+                type = 2;
+                break;
+            case R.id.nav_cartoon:
+                type = 3;
+                break;
+            case R.id.nav_sport:
+                type = 4;
+                break;
+            case R.id.nav_entertainment:
+                type = 5;
+                break;
+            case R.id.nav_others:
+                type = 6;
+                break;
+//            case R.id.nav_feedback:
+//                break;
+            default:
+                type = 0;
+                break;
         }
-
+        if (temp != type) {
+            switchToFragment(type);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        if(fragment != null){
-            getFragmentManager().beginTransaction().replace(R.id.fragment_layout,fragment).commit();
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
         }
-
-        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void switchToFragment(int type) {
+        Fragment fragment;
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
+        fragment = new ItemFragment();
+        fragment.setArguments(bundle);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_layout, fragment).commit();
+        toolbar.setTitle(Video.getTypeString(type));
     }
 
 }
