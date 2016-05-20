@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 public class Video implements Serializable{
 
+    private String id;
     private String title;
     private String description;
     private String uri_cover = null;
@@ -12,7 +13,8 @@ public class Video implements Serializable{
     private String uri_hd = null;
     private String uri_sd = null;
 
-    public Video(String title, String description, String uri_cover, String uri_uhd, String uri_hd, String uri_sd) {
+    public Video(String id, String title, String description, String uri_cover, String uri_uhd, String uri_hd, String uri_sd) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.uri_cover = uri_cover;
@@ -24,7 +26,8 @@ public class Video implements Serializable{
     @Override
     public String toString() {
         return "Video{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", uri_cover='" + uri_cover + '\'' +
                 ", uri_uhd='" + uri_uhd + '\'' +
@@ -33,52 +36,32 @@ public class Video implements Serializable{
                 '}';
     }
 
-    public String getTitle() {
-        return title;
+    public String getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getUri_cover() {
         return uri_cover;
-    }
-
-    public void setUri_cover(String uri_cover) {
-        this.uri_cover = uri_cover;
     }
 
     public String getUri_uhd() {
         return uri_uhd;
     }
 
-    public void setUri_uhd(String uri_uhd) {
-        this.uri_uhd = uri_uhd;
-    }
-
     public String getUri_hd() {
         return uri_hd;
     }
 
-    public void setUri_hd(String uri_hd) {
-        this.uri_hd = uri_hd;
-    }
-
     public String getUri_sd() {
         return uri_sd;
-    }
-
-    public void setUri_sd(String uri_sd) {
-        this.uri_sd = uri_sd;
     }
 
     public static String getTypeString(int type) {

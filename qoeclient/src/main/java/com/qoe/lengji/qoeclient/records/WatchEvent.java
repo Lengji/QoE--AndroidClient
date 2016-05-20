@@ -36,7 +36,7 @@ public class WatchEvent {
 
     public WatchEvent(JSONObject jsonObject){
         try {
-            this.event = jsonObject.getInt("event");
+            this.event = getEventInt(jsonObject.getString("event"));
             this.position = jsonObject.getLong("position");
             this.duration = jsonObject.getLong("duration");
         } catch (JSONException e) {
@@ -48,13 +48,13 @@ public class WatchEvent {
     public String toString() {
         if (duration > 0) {
             return "WatchEvent{" +
-                    "event=" + eventString() +
+                    "event=" + getEventString(event) +
                     ", position=" + position +
                     ", duration=" + duration +
                     '}';
         } else {
             return "WatchEvent{" +
-                    "event=" + eventString() +
+                    "event=" + getEventString(event) +
                     ", position=" + position +
                     '}';
         }
@@ -64,15 +64,15 @@ public class WatchEvent {
         return event;
     }
 
-    public void setEvent(int event) {
-        this.event = event;
-    }
-
     public long getPosition() {
         return position;
     }
 
-    public String eventString() {
+    public long getDuration(){
+        return duration;
+    }
+
+    public static String getEventString(int event) {
         switch (event) {
             case PREPARED:
                 return "PREPARED";
@@ -107,10 +107,45 @@ public class WatchEvent {
         }
     }
 
+    public static int getEventInt(String eventString){
+        switch(eventString){
+            case "PREPARED":
+                return PREPARED;
+            case "PAUSE_NORMAL":
+                return PAUSE_NORMAL;
+            case "PAUSE_STUCK":
+                return PAUSE_STUCK;
+            case "PLAY":
+                return PLAY;
+            case "FULLSCREEN":
+                return FULLSCREEN;
+            case "FULLSCREEN_EXIT":
+                return FULLSCREEN_EXIT;
+            case "SEEK_LEFT":
+                return SEEK_LEFT;
+            case "SEEK_RIGHR":
+                return SEEK_RIGHR;
+            case "STUCK":
+                return STUCK;
+            case "RESOLUTION_SD":
+                return RESOLUTION_SD;
+            case "RESOLUTION_HD":
+                return RESOLUTION_HD;
+            case "RESOLUTION_UHD":
+                return RESOLUTION_UHD;
+            case "FINISH":
+                return FINISH;
+            case "QUIT":
+                return QUIT;
+            default:
+                return 0;
+        }
+    }
+
     public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("event", event);
+            jsonObject.put("event", getEventString(event));
             jsonObject.put("position", position);
             jsonObject.put("duration", duration);
         } catch (JSONException e) {

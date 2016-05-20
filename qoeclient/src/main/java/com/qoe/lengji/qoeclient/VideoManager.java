@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class VideoManager {
     public static ArrayList<Video> getVideoList(int type) {
         final ArrayList<Video> list = new ArrayList<>();
-        String ip = "http://192.16.137.1";
+        String ip = "http://10.105.40.212";
         String port = "8080";
         final String requestPath = ip + ":" + port + "/QoEServer/VideoServlet?type=" + String.valueOf(type);
         final String resourcePath = ip + ":" + port + "/QoEResource";
@@ -58,7 +58,7 @@ public class VideoManager {
                                 uri_sd = resourcePath + "/" + Video.getTypeString(type)
                                         + "/" + id + "/" + "sd.mp4";
                             }
-                            Video v = new Video(title, detail, uri_cover, uri_uhd, uri_hd, uri_sd);
+                            Video v = new Video(id,title, detail, uri_cover, uri_uhd, uri_hd, uri_sd);
                             list.add(v);
                         }
                     }

@@ -123,11 +123,10 @@ public class CustomMediaController extends PopupWindow {
                 }
                 if (mediaControl.isPlaying()) {
                     mediaControl.pause();
-                    stopCheckStuck();
                 } else {
                     mediaControl.start();
-                    startCheckStuck();
                 }
+                startCheckStuck();
                 updatePlayPause();
                 show();
             }
@@ -153,7 +152,7 @@ public class CustomMediaController extends PopupWindow {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
                     long newPosition = mediaControl.getDuration() * progress / 1000;
-                    mediaControl.seekTo((int) newPosition);
+                    mediaControl.seekToPosition((int) newPosition);
                     textView_playTime.setText(stringForTime((int) newPosition));
                 }
             }
@@ -190,7 +189,7 @@ public class CustomMediaController extends PopupWindow {
             public void onClick(View v) {
                 hideResolutionSelector();
                 mediaControl.changeResolution(1);
-                action_change_resolution.setText("标清");
+                action_change_resolution.setText("流畅");
             }
         });
         resolution_hd.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +197,7 @@ public class CustomMediaController extends PopupWindow {
             public void onClick(View v) {
                 hideResolutionSelector();
                 mediaControl.changeResolution(2);
-                action_change_resolution.setText("高清");
+                action_change_resolution.setText("清晰");
             }
         });
         resolution_uhd.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +205,7 @@ public class CustomMediaController extends PopupWindow {
             public void onClick(View v) {
                 hideResolutionSelector();
                 mediaControl.changeResolution(3);
-                action_change_resolution.setText("超清");
+                action_change_resolution.setText("高清");
             }
         });
 
@@ -243,10 +242,9 @@ public class CustomMediaController extends PopupWindow {
         int minutes = (totalSeconds / 60) % 60;
         int hours = totalSeconds / 3600;
         if (hours > 0) {
-            return String.format("%d:%02d:%02d", hours, minutes, seconds);
-        } else {
-            return String.format("%02d:%02d", minutes, seconds);
+            return String.format("%d:%02d:%02d".toLowerCase(), hours, minutes, seconds);
         }
+        return String.format("%02d:%02d".toLowerCase(), minutes, seconds);
     }
 
     public void updatePlayPause() {
@@ -352,7 +350,7 @@ public class CustomMediaController extends PopupWindow {
 
         int getBufferPercentage();
 
-        void seekTo(int newPosition);
+        void seekToPosition(int newPosition);
 
         void changeResolution(int resolution);
 

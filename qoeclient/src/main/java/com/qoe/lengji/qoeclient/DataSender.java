@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class DataSender {
     public static boolean send(final JSONObject jsonObject) {
-        String ip = "http://192.16.137.1";
+        String ip = "http://10.105.40.212";
         String port = "8080";
         final String urlString = ip + ":" + port + "/QoEServer/DataServlet";
         final boolean[] result = {false};

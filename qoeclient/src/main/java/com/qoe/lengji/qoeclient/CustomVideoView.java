@@ -39,6 +39,7 @@ public class CustomVideoView extends VideoView implements CustomMediaController.
     private long createTime = 0;
     private long initTime;
 
+    private long duration = 0;
     private long pauseStartTime = 0;
     private ArrayList<WatchEvent> eventList = new ArrayList<>();
 
@@ -84,6 +85,7 @@ public class CustomVideoView extends VideoView implements CustomMediaController.
                     mController.hide();
                 }
                 reSize();
+                duration = getDuration();
             }
         });
         setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -188,10 +190,10 @@ public class CustomVideoView extends VideoView implements CustomMediaController.
             TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
             String IMEI = tm.getDeviceId();
             submitData.put("user", IMEI);
-            //评分
-            submitData.put("rating", rating);
-            //播放页面持续时间
+            submitData.put("video", video.getId());
+            submitData.put("duration", duration);
             submitData.put("totalTime", new Date().getTime() - createTime);
+            submitData.put("rating", rating);
             //获取电量信息和充电状态
             IntentFilter inFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
             Intent batteryStatus = getContext().registerReceiver(null, inFilter);
@@ -210,15 +212,15 @@ public class CustomVideoView extends VideoView implements CustomMediaController.
             //事件和操作纪录
             JSONArray ja = new JSONArray();
             for (WatchEvent we : eventList) {
-                ja.put(we);
+                ja.put(we.toJSONObject());
             }
-            submitData.put("events", ja.toString());
+            submitData.put("events", ja);
 
             /*------------------发送到服务器---------------------*/
-            if(DataSender.send(submitData)){
-                Toast.makeText(getContext(),"发送成功",Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(getContext(),"发送失败",Toast.LENGTH_SHORT).show();
+            if (DataSender.send(submitData)) {
+                Toast.makeText(getContext(), "发送成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "发送失败", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,12 +266,14 @@ public class CustomVideoView extends VideoView implements CustomMediaController.
     }
 
     @Override
-    public void seekTo(int newPosition) {
+    public void seekToPosition(int newPosition) {
         long currentPosition = getCurrentPosition();
         if (currentPosition > newPosition) {
             eventList.add(new WatchEvent(WatchEvent.SEEK_LEFT, getCurrentPosition(), currentPosition - newPosition));
         } else if (currentPosition < newPosition) {
             eventList.add(new WatchEvent(WatchEvent.SEEK_RIGHR, getCurrentPosition(), newPosition - currentPosition));
+        } else {
+            return;
         }
         super.seekTo(newPosition);
     }
