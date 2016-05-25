@@ -45,7 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="您本次的观影体验如何：" />
+            android:text="您本次的观影体验如何："
+            android:id="@+id/text_score" />
 
         <RatingBar
             android:id="@+id/ratingBar"
