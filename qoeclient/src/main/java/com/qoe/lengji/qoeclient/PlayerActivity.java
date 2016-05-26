@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 
 public class PlayerActivity extends Activity implements CustomVideoView.canFullScreen {

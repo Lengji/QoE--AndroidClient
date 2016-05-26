@@ -81,11 +81,31 @@ public class CustomVideoView extends VideoView implements CustomMediaController.
                 long startTime = new Date().getTime();
                 hasPrepared(startTime - initTime);
                 if (mController != null) {
-                    mController.startCheckStuck();
                     mController.hide();
                 }
                 reSize();
                 duration = getDuration();
+            }
+        });
+        setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                switch (what) {
+                    case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        if (mController != null) {
+                            mController.startStuck();
+                        }
+                        break;
+                    case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        if (mController != null) {
+                            mController.stopStuck();
+                        }
+                        break;
+                    case MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                        break;
+                    default:
+                }
+                return false;
             }
         });
         setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

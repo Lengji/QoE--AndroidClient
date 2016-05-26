@@ -10,12 +10,13 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.Date;
+
 public class CustomMediaController extends PopupWindow {
 
     private static final int FADE_OUT = 1;
     private static final int SHOW_PROGRESS = 2;
     private static final int defaultTimeout = 5000;
-    private static final int stuckCheckTime = 500;
     private static final int controllerHeight = 40;  // 控制器的高度，使用时要乘以densityRatio
     private static final float densityRatio = 2.0f; // 密度比值系数（密度比值：一英寸中像素点除以160）
     private static final int selectorWidth = 60;
@@ -23,10 +24,8 @@ public class CustomMediaController extends PopupWindow {
     private static final int selectorItemCount = 3;
 
     private boolean isDragging = false;
-    private boolean checkingStuck = false;
     private boolean beingStuck = false;
-    private int lastPosition = 0;
-    private long stuckTime = 0;
+    private long stuckStartTime = 0;
 
     private ImageButton action_pause = null;
     private ImageButton action_fullscreen = null;
@@ -60,24 +59,6 @@ public class CustomMediaController extends PopupWindow {
     };
 
     private CustomMediaPlayerControl mediaControl = null;
-    private final Handler stuckHandler = new Handler();
-    Runnable onceCheckStuck = new Runnable() {
-        @Override
-        public void run() {
-            if (checkingStuck && mediaControl.isPlaying()) {
-                if (lastPosition == mediaControl.getCurrentPosition()) {
-                    stuckTime += stuckCheckTime;
-                    beingStuck = true;
-                } else if (beingStuck) {
-                    beingStuck = false;
-                    mediaControl.onStuck(stuckTime);
-                    stuckTime = 0;
-                }
-                lastPosition = mediaControl.getCurrentPosition();
-                stuckHandler.postDelayed(onceCheckStuck, stuckCheckTime);
-            }
-        }
-    };
 
     public CustomMediaController(Context context) {
         super(context);
@@ -88,7 +69,6 @@ public class CustomMediaController extends PopupWindow {
 
     private void initStatus() {
         beingStuck = false;
-        checkingStuck = false;
         isDragging = false;
     }
 
@@ -126,8 +106,6 @@ public class CustomMediaController extends PopupWindow {
                 } else {
                     mediaControl.start();
                 }
-                startCheckStuck();
-                updatePlayPause();
                 show();
             }
         });
@@ -226,11 +204,11 @@ public class CustomMediaController extends PopupWindow {
         int position = mediaControl.getCurrentPosition();
         int duration = mediaControl.getDuration();
         if (duration > 0) {
-            long pos = 1000L * position / duration;
-            seekbar.setProgress((int) pos);
+            long pct = 1000L * position / duration;
+            seekbar.setProgress((int) pct);
         }
-        int percent = mediaControl.getBufferPercentage();
-        seekbar.setSecondaryProgress(percent * 10);
+        int bufferPct = mediaControl.getBufferPercentage();
+        seekbar.setSecondaryProgress(bufferPct * 10);
         textView_duration.setText(stringForTime(duration));
         textView_playTime.setText(stringForTime(position));
         return position;
@@ -298,7 +276,18 @@ public class CustomMediaController extends PopupWindow {
         show();
     }
 
-    public boolean bingStuck(){
+    public void startStuck() {
+        beingStuck = true;
+        stuckStartTime = new Date().getTime();
+    }
+
+    public void stopStuck() {
+        beingStuck = false;
+        long stuckEndTime = new Date().getTime();
+        mediaControl.onStuck(stuckEndTime - stuckStartTime);
+    }
+
+    public boolean bingStuck() {
         return beingStuck;
     }
 
@@ -316,19 +305,6 @@ public class CustomMediaController extends PopupWindow {
 
     public void setPlayer(CustomMediaPlayerControl control) {
         mediaControl = control;
-    }
-
-    public void startCheckStuck() {
-        checkingStuck = true;
-        if (!beingStuck) {
-            stuckTime = 0;
-        }
-        lastPosition = mediaControl.getCurrentPosition();
-        stuckHandler.postDelayed(onceCheckStuck, stuckCheckTime);
-    }
-
-    public void stopCheckStuck() {
-        checkingStuck = false;
     }
 
     public interface CustomMediaPlayerControl {
